@@ -4,3 +4,8 @@
 
 # node modules
 node_modules
+
+# submission files
+*.zip
+**/*.pdf
+**/*.zip

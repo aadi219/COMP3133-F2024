@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Group Chat</h1>
+    <h4 id="socketID"></h4>
+    <input type="radio" name="group" value="news" id="group1">
+    <label for="group1">News</label>
+    <input type="radio" name="group" value="sports" id="group2">
+    <label for="group2">Sports</label>
+    <button onclick="joinGroup()">Join Group</button>
+    <button onclick="leaveGroup()">Leave Group</button>
+    <br />
+    <input type="text" name="message" placeholder="Enter Message" id="message">
+    <button onclick="sendGroupMsg()">Send</button>
+    <div id="container"></div>
+    <script>
+        const socket = io();
+        socket.on('connect', (data) => {
+            console.log('Connected to server');
+            socket.send("Hello from client: " + socket.id);
+            const socketId = document.getElementById('socketID');
+            socketId.innerHTML = `Socket ID: ${socket.id}`;
+        })
+        socket.on('message', (data) => {
+            console.log('Message from server: ' + data);
+        });
+        socket.on("group_message", (data) => {
+            displayMsg(data);
+        });
+
+        const joinGroup = () => {
+            const groupName = document.querySelector('input[name="group"]:checked').value;
+            socket.emit("join_group", groupName);           
+        }
+
+        const getSelectedGroup = () => {
+            const groups = document.querySelectorAll('input[name="group"]');
+            const selectedGroup = groups.filter(group => group.checked);
+            if (selectedGroup.length > 0) {
+                return selectedGroup[0].value;
+            } else {
+                return null;
+            }
+        }
+
+        const displayMsg = (data, isSender) => {
+            const senderId = data.senderId ?? socket.id;
+            const msg = `<b>${data.groupName} : ${senderId}:</b> ${data.message}`;
+            const container = document.getElementById('container');
+            container.innerHTML += `<p>${msg}</p>`;
+        }
+
+        const sendGroupMsg = () => {
+            const data = {
+                senderId: socket.id,
+                groupName: document.querySelector('input[name="group"]:checked').value,
+                message: document.getElementById('message').value,
+                dateSent: Date()
+            };
+            socket.emit('group_message', data);
+        }
+        const leaveGroup = () => {
+
+        }
+    </script>
+    
+</body>
+</html>

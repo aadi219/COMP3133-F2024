@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Client</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <h1>Socket Programming</h1>
+    <a href="/views/group_chat.html"></a>
+    <input type="text" id="message" placeholder="Enter message">
+    <button id="send">Send</button>
+    <div id="container"></div>
+    <script>
+        const sendBtn = document.getElementById('send');
+
+        const client = io();
+
+        const sendMessage = () => {
+            const message = document.getElementById('message');
+            const data = {
+                message: message.value,
+                dateSent: Date()
+            }
+            displayMsg(data);
+            client.emit('chat_message', data);
+            message.value = '';
+
+        }
+        const displayMsg = (data, isSender) => {
+            const senderId = data.senderId ?? client.id;
+            const msg = `${senderId}: ${data.message}`;
+            const container = document.getElementById('container');
+            container.innerHTML += `<p>${msg}</p>`;
+        }
+        
+        sendBtn.addEventListener('click', sendMessage);
+
+
+        client.on('chat_message', (data) => {
+            displayMsg(data);
+        });
+
+        client.on('connect', (data) => {
+            console.log('Connected to server');
+            client.send("Hello from client: " + client.id);
+
+        })
+        client.on('message', (data) => {
+            console.log('Message from server: ' + data);
+        });
+    </script>
+</body>
+</html>
