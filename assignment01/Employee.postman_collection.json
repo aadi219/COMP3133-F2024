@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "64ad689c-fdaf-460b-b113-77bc91dcf6dc",
+		"name": "Employee",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "15399671"
+	},
+	"item": [
+		{
+			"name": "getEmployee",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGMyZWRmMDlhOGI1NmM1ZjRlMjM4MyIsImlhdCI6MTczMzEwNTI1MywiZXhwIjoxNzMzMTA4ODUzfQ.-7E83BX03hV42Q-Kp1rbgjhf69XNz98yLrhtn7UqMhY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    getAllEmployees {\r\n        id,\r\n        first_name,\r\n        last_name,\r\n        email,\r\n        salary,\r\n        designation,\r\n        department,\r\n        employee_photo,\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "addEmployee",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGMyZWRmMDlhOGI1NmM1ZjRlMjM4MyIsImlhdCI6MTczMzEwNTI1MywiZXhwIjoxNzMzMTA4ODUzfQ.-7E83BX03hV42Q-Kp1rbgjhf69XNz98yLrhtn7UqMhY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\r\n    addEmployee(\r\n        first_name: \"Jane\",\r\n        last_name: \"Doe\",\r\n        email: \"janedoe@example.com\",\r\n        gender: \"female\",\r\n        salary: 20000,\r\n        date_of_joining: \"01/01/2024\",\r\n        department: \"QA\",\r\n        designation: \"Senior\"\r\n    ) {\r\n        id,\r\n        first_name,\r\n        last_name,\r\n        email,\r\n        gender,\r\n        salary,\r\n        department,\r\n        designation,\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "getEmpById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    getEmployeeById(id: \"67af97db34f436f42219b9cc\") {\r\n        first_name,\r\n        last_name,\r\n        email,\r\n        department,\r\n        designation,\r\n        employee_photo\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "updateEmp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\r\n    updateEmployee(\r\n        id: \"67af97db34f436f42219b9cc\", \r\n        employee_photo: \"new_photo.jpg\") \r\n        {\r\n            id\r\n            first_name,\r\n            last_name,\r\n            employee_photo\r\n        }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "deleteEmp",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "mutation {\r\n    deleteEmployee(id: \"67af97db34f436f42219b9cc\") {\r\n        id,\r\n        first_name,\r\n        last_name,\r\n        department,\r\n        designation\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		},
+		{
+			"name": "filterEmployees",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-access-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MGMyZWRmMDlhOGI1NmM1ZjRlMjM4MyIsImlhdCI6MTczMzEwNTI1MywiZXhwIjoxNzMzMTA4ODUzfQ.-7E83BX03hV42Q-Kp1rbgjhf69XNz98yLrhtn7UqMhY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "graphql",
+					"graphql": {
+						"query": "query {\r\n    getEmployeeByDesignationOrDepartment(designation: \"Senior\") {\r\n        first_name,\r\n        last_name,\r\n        designation,\r\n        department\r\n    }\r\n}",
+						"variables": ""
+					}
+				},
+				"url": "localhost:3000/graphql"
+			},
+			"response": []
+		}
+	]
+}
